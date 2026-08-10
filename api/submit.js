@@ -11,6 +11,7 @@ export default async function handler(req, res) {
     detalle: String(b.detalle || '').slice(0, 2000),
     telefono: String(b.telefono || '').slice(0, 50),
     utm: String(b.utm || '').slice(0, 500),
+    empleado_id: String(b.empleado_id || '').slice(0, 100),
     user_agent: String(b.user_agent || '').slice(0, 300),
   };
   if (!row.nombre || !row.salvo || !row.familia || !row.vivienda || !row.apoyo)
@@ -32,8 +33,8 @@ export default async function handler(req, res) {
             {
               type: 'execute',
               stmt: {
-                sql: 'INSERT INTO safety_checkins (nombre,salvo,familia,vivienda,apoyo,detalle,telefono,utm,user_agent) VALUES (?,?,?,?,?,?,?,?,?)',
-                args: [row.nombre, row.salvo, row.familia, row.vivienda, row.apoyo, row.detalle, row.telefono, row.utm, row.user_agent]
+                sql: 'INSERT INTO safety_checkins (nombre,salvo,familia,vivienda,apoyo,detalle,telefono,utm,empleado_id,user_agent) VALUES (?,?,?,?,?,?,?,?,?,?)',
+                args: [row.nombre, row.salvo, row.familia, row.vivienda, row.apoyo, row.detalle, row.telefono, row.utm, row.empleado_id, row.user_agent]
                   .map((v) => ({ type: 'text', value: v })),
               },
             },

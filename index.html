@@ -15,16 +15,27 @@
     --ok:#00e3e8; --line:rgba(255,255,255,.14); --err:#f23d4c;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
-  body{margin:0; background:linear-gradient(to bottom right,var(--bg1),var(--bg2)) fixed; color:var(--ink);
-       font:16px/1.5 "Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-       padding:16px; padding-bottom:48px}
+  body{margin:0; background:linear-gradient(160deg,var(--bg1),var(--bg2) 60%,#00262e) fixed; color:var(--ink);
+       font:16px/1.55 "Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       padding:16px; padding-bottom:max(48px, env(safe-area-inset-bottom))}
   .wrap{max-width:520px; margin:0 auto}
-  header{padding:18px 4px 10px}
-  h1{font-size:1.45rem; margin:0 0 6px}
-  .sub{color:var(--muted); font-size:.95rem; margin:0}
+  header{padding:18px 4px 4px}
+  h1{font-size:clamp(1.5rem, 6vw, 1.9rem); font-weight:600; letter-spacing:-.02em; margin:0 0 8px}
+  .sub{color:var(--muted); font-size:.95rem; margin:0; display:flex; align-items:center; gap:8px}
+  .pulse{width:8px; height:8px; border-radius:50%; background:var(--accent); flex:none;
+       box-shadow:0 0 0 0 rgba(0,227,232,.5); animation:pulse 2.4s ease-out infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 9px rgba(0,227,232,0)} 100%{box-shadow:0 0 0 0 rgba(0,227,232,0)}}
+  .eyebrow{display:block; color:var(--accent); font-size:.72rem; font-weight:600;
+       letter-spacing:.14em; text-transform:uppercase; margin-bottom:6px}
+  @media (prefers-reduced-motion: reduce){
+    .pulse{animation:none}
+    *{transition-duration:.01ms !important; animation-duration:.01ms !important}
+  }
   .card{background:var(--card); border:1px solid var(--line); border-radius:16px;
-        padding:18px; margin-top:14px}
-  .q{font-weight:600; margin:0 0 12px; font-size:1.02rem}
+        padding:18px; margin-top:14px; backdrop-filter:blur(6px);
+        transition:border-color .2s}
+  .card:focus-within{border-color:rgba(0,227,232,.45)}
+  .q{font-weight:500; margin:0 0 12px; font-size:1.02rem; line-height:1.4}
   .q .opt-tag{color:var(--muted); font-weight:400; font-size:.85rem}
   input[type=text], input[type=tel], textarea{
     width:100%; background:transparent; color:var(--ink);
@@ -37,6 +48,8 @@
        border-radius:12px; padding:13px 14px; cursor:pointer; transition:all .15s;
        font-size:.98rem}
   .opt:active{transform:scale(.985)}
+  .opt:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+       outline:2px solid var(--accent); outline-offset:2px}
   .opt input{position:absolute; opacity:0; pointer-events:none}
   .dot{width:20px; height:20px; border-radius:50%; border:2px solid var(--muted);
        flex:none; display:grid; place-items:center; transition:all .15s}
@@ -46,9 +59,10 @@
   .opt.sel .dot{border-color:var(--accent)}
   .opt.sel .dot::after{transform:scale(1)}
   button{width:100%; margin-top:20px; padding:16px; border:0; border-radius:14px;
-       background:var(--cta); color:var(--ctaink); font-size:1.08rem; font-weight:700;
-       cursor:pointer; transition:filter .15s}
-  button:active{filter:brightness(.9)}
+       background:var(--cta); color:var(--ctaink); font-size:1.08rem; font-weight:600;
+       font-family:inherit; letter-spacing:.01em; cursor:pointer;
+       box-shadow:0 6px 24px rgba(248,242,43,.22); transition:filter .15s, transform .1s}
+  button:active{filter:brightness(.9); transform:translateY(1px)}
   button:disabled{opacity:.55}
   .err{color:var(--err); font-size:.88rem; margin:8px 0 0; display:none}
   .card.invalid .err{display:block}
@@ -64,19 +78,19 @@
 <div class="wrap">
   <header>
     <img class="logo" src="assets/logo.png" alt="Linktic">
-    <h1>¿Estás bien? 🙏</h1>
-    <p class="sub">Queremos saber cómo estás. Te toma menos de 1 minuto.</p>
+    <h1>¿Estás bien?</h1>
+    <p class="sub"><span class="pulse" aria-hidden="true"></span>Queremos saber cómo estás. Te toma menos de 1 minuto.</p>
   </header>
 
   <form id="f" novalidate>
     <div class="card" data-req="1">
-      <p class="q">1. Nombre completo</p>
+      <p class="q"><span class="eyebrow">Pregunta 1 de 7</span>Nombre completo</p>
       <input type="text" name="nombre" autocomplete="name" placeholder="Tu nombre y apellido">
       <p class="err">Por favor escribe tu nombre.</p>
     </div>
 
     <div class="card" data-req="1">
-      <p class="q">2. ¿Te encuentras a salvo en este momento?</p>
+      <p class="q"><span class="eyebrow">Pregunta 2 de 7</span>¿Te encuentras a salvo en este momento?</p>
       <div class="opts" data-name="salvo">
         <label class="opt"><span class="dot"></span>Sí</label>
         <label class="opt"><span class="dot"></span>No</label>
@@ -86,7 +100,7 @@
     </div>
 
     <div class="card" data-req="1">
-      <p class="q">3. ¿Tu familia o las personas que se encuentran contigo están bien?</p>
+      <p class="q"><span class="eyebrow">Pregunta 3 de 7</span>¿Tu familia o las personas que se encuentran contigo están bien?</p>
       <div class="opts" data-name="familia">
         <label class="opt"><span class="dot"></span>Sí</label>
         <label class="opt"><span class="dot"></span>No</label>
@@ -96,7 +110,7 @@
     </div>
 
     <div class="card" data-req="1">
-      <p class="q">4. ¿Tu vivienda o el lugar donde te encuentras presentó alguna afectación que comprometa tu seguridad?</p>
+      <p class="q"><span class="eyebrow">Pregunta 4 de 7</span>¿Tu vivienda o el lugar donde te encuentras presentó alguna afectación que comprometa tu seguridad?</p>
       <div class="opts" data-name="vivienda">
         <label class="opt"><span class="dot"></span>No</label>
         <label class="opt"><span class="dot"></span>Sí, pero estamos en un lugar seguro</label>
@@ -106,7 +120,7 @@
     </div>
 
     <div class="card" data-req="1">
-      <p class="q">5. ¿Necesitas algún tipo de apoyo por parte de la empresa en este momento?</p>
+      <p class="q"><span class="eyebrow">Pregunta 5 de 7</span>¿Necesitas algún tipo de apoyo por parte de la empresa en este momento?</p>
       <div class="opts" data-name="apoyo">
         <label class="opt"><span class="dot"></span>No</label>
         <label class="opt"><span class="dot"></span>Sí</label>
@@ -115,12 +129,12 @@
     </div>
 
     <div class="card">
-      <p class="q">6. Si respondiste que sí o hay alguna situación que debamos conocer, cuéntanos brevemente cuál <span class="opt-tag">(opcional)</span></p>
+      <p class="q"><span class="eyebrow">Pregunta 6 de 7</span>Si respondiste que sí o hay alguna situación que debamos conocer, cuéntanos brevemente cuál <span class="opt-tag">(opcional)</span></p>
       <textarea name="detalle" placeholder="Cuéntanos brevemente…"></textarea>
     </div>
 
     <div class="card">
-      <p class="q">7. ¿Tienes algún número al que te podamos contactar además de este? <span class="opt-tag">(opcional)</span></p>
+      <p class="q"><span class="eyebrow">Pregunta 7 de 7</span>¿Tienes algún número al que te podamos contactar además de este? <span class="opt-tag">(opcional)</span></p>
       <input type="tel" name="telefono" inputmode="tel" autocomplete="tel" placeholder="Ej: 300 123 4567">
     </div>
 
@@ -181,6 +195,7 @@ document.getElementById('f').addEventListener('submit', function(ev){
   if(!ok){ document.querySelector('.card.invalid').scrollIntoView({behavior:'smooth', block:'center'}); return; }
 
   data.utm = utmString();
+  data.empleado_id = new URLSearchParams(location.search).get('id') || '';
   data.user_agent = navigator.userAgent;
 
   var btn = document.getElementById('btn');
