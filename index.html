@@ -5,18 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>¿Estás bien? — Reporte de estado</title>
 <meta name="description" content="Reporte rápido de estado y seguridad">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0f1420; --card:#1a2232; --ink:#eef2f8; --muted:#93a0b4;
-    --accent:#3b82f6; --accent2:#2563eb; --ok:#22c55e; --line:#2a3550;
-  }
-  @media (prefers-color-scheme: light){
-    :root{ --bg:#f2f5fa; --card:#ffffff; --ink:#111827; --muted:#5b6779;
-           --accent:#2563eb; --accent2:#1d4ed8; --ok:#16a34a; --line:#e3e8f0; }
+    --bg1:#001629; --bg2:#001f30; --card:rgba(255,255,255,.05); --ink:#eef4f8;
+    --muted:#93a8b8; --accent:#00e3e8; --cta:#f8f22b; --ctaink:#001629;
+    --ok:#00e3e8; --line:rgba(255,255,255,.14); --err:#f23d4c;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
-  body{margin:0; background:var(--bg); color:var(--ink);
-       font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  body{margin:0; background:linear-gradient(to bottom right,var(--bg1),var(--bg2)) fixed; color:var(--ink);
+       font:16px/1.5 "Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
        padding:16px; padding-bottom:48px}
   .wrap{max-width:520px; margin:0 auto}
   header{padding:18px 4px 10px}
@@ -46,22 +46,24 @@
   .opt.sel .dot{border-color:var(--accent)}
   .opt.sel .dot::after{transform:scale(1)}
   button{width:100%; margin-top:20px; padding:16px; border:0; border-radius:14px;
-       background:var(--accent); color:#fff; font-size:1.08rem; font-weight:700;
-       cursor:pointer; transition:background .15s}
-  button:active{background:var(--accent2)}
+       background:var(--cta); color:var(--ctaink); font-size:1.08rem; font-weight:700;
+       cursor:pointer; transition:filter .15s}
+  button:active{filter:brightness(.9)}
   button:disabled{opacity:.55}
-  .err{color:#f87171; font-size:.88rem; margin:8px 0 0; display:none}
+  .err{color:var(--err); font-size:.88rem; margin:8px 0 0; display:none}
   .card.invalid .err{display:block}
-  .card.invalid{border-color:#f87171}
+  .card.invalid{border-color:var(--err)}
+  .logo{height:34px; display:block; margin:6px 0 14px}
   #done{display:none; text-align:center; padding:48px 20px}
   #done .check{width:72px; height:72px; border-radius:50%; background:var(--ok);
-       display:grid; place-items:center; margin:0 auto 18px; color:#fff; font-size:38px}
+       display:grid; place-items:center; margin:0 auto 18px; color:#001629; font-size:38px}
   footer{color:var(--muted); font-size:.8rem; text-align:center; margin-top:26px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
+    <img class="logo" src="assets/logo.png" alt="Linktic">
     <h1>¿Estás bien? 🙏</h1>
     <p class="sub">Queremos saber cómo estás. Te toma menos de 1 minuto.</p>
   </header>
