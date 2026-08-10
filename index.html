@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>¿Estás bien? — Reporte de estado</title>
+<meta name="description" content="Reporte rápido de estado y seguridad">
+<style>
+  :root{
+    --bg:#0f1420; --card:#1a2232; --ink:#eef2f8; --muted:#93a0b4;
+    --accent:#3b82f6; --accent2:#2563eb; --ok:#22c55e; --line:#2a3550;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f2f5fa; --card:#ffffff; --ink:#111827; --muted:#5b6779;
+           --accent:#2563eb; --accent2:#1d4ed8; --ok:#16a34a; --line:#e3e8f0; }
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  body{margin:0; background:var(--bg); color:var(--ink);
+       font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       padding:16px; padding-bottom:48px}
+  .wrap{max-width:520px; margin:0 auto}
+  header{padding:18px 4px 10px}
+  h1{font-size:1.45rem; margin:0 0 6px}
+  .sub{color:var(--muted); font-size:.95rem; margin:0}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:16px;
+        padding:18px; margin-top:14px}
+  .q{font-weight:600; margin:0 0 12px; font-size:1.02rem}
+  .q .opt-tag{color:var(--muted); font-weight:400; font-size:.85rem}
+  input[type=text], input[type=tel], textarea{
+    width:100%; background:transparent; color:var(--ink);
+    border:1.5px solid var(--line); border-radius:12px; padding:13px 14px;
+    font-size:1rem; outline:none; transition:border-color .15s}
+  input:focus, textarea:focus{border-color:var(--accent)}
+  textarea{min-height:96px; resize:vertical; font-family:inherit}
+  .opts{display:flex; flex-direction:column; gap:10px}
+  .opt{display:flex; align-items:center; gap:12px; border:1.5px solid var(--line);
+       border-radius:12px; padding:13px 14px; cursor:pointer; transition:all .15s;
+       font-size:.98rem}
+  .opt:active{transform:scale(.985)}
+  .opt input{position:absolute; opacity:0; pointer-events:none}
+  .dot{width:20px; height:20px; border-radius:50%; border:2px solid var(--muted);
+       flex:none; display:grid; place-items:center; transition:all .15s}
+  .dot::after{content:""; width:10px; height:10px; border-radius:50%;
+       background:var(--accent); transform:scale(0); transition:transform .15s}
+  .opt.sel{border-color:var(--accent); background:color-mix(in srgb, var(--accent) 10%, transparent)}
+  .opt.sel .dot{border-color:var(--accent)}
+  .opt.sel .dot::after{transform:scale(1)}
+  button{width:100%; margin-top:20px; padding:16px; border:0; border-radius:14px;
+       background:var(--accent); color:#fff; font-size:1.08rem; font-weight:700;
+       cursor:pointer; transition:background .15s}
+  button:active{background:var(--accent2)}
+  button:disabled{opacity:.55}
+  .err{color:#f87171; font-size:.88rem; margin:8px 0 0; display:none}
+  .card.invalid .err{display:block}
+  .card.invalid{border-color:#f87171}
+  #done{display:none; text-align:center; padding:48px 20px}
+  #done .check{width:72px; height:72px; border-radius:50%; background:var(--ok);
+       display:grid; place-items:center; margin:0 auto 18px; color:#fff; font-size:38px}
+  footer{color:var(--muted); font-size:.8rem; text-align:center; margin-top:26px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>¿Estás bien? 🙏</h1>
+    <p class="sub">Queremos saber cómo estás. Te toma menos de 1 minuto.</p>
+  </header>
+
+  <form id="f" novalidate>
+    <div class="card" data-req="1">
+      <p class="q">1. Nombre completo</p>
+      <input type="text" name="nombre" autocomplete="name" placeholder="Tu nombre y apellido">
+      <p class="err">Por favor escribe tu nombre.</p>
+    </div>
+
+    <div class="card" data-req="1">
+      <p class="q">2. ¿Te encuentras a salvo en este momento?</p>
+      <div class="opts" data-name="salvo">
+        <label class="opt"><span class="dot"></span>Sí</label>
+        <label class="opt"><span class="dot"></span>No</label>
+        <label class="opt"><span class="dot"></span>Tengo una situación que requiere atención</label>
+      </div>
+      <p class="err">Selecciona una opción.</p>
+    </div>
+
+    <div class="card" data-req="1">
+      <p class="q">3. ¿Tu familia o las personas que se encuentran contigo están bien?</p>
+      <div class="opts" data-name="familia">
+        <label class="opt"><span class="dot"></span>Sí</label>
+        <label class="opt"><span class="dot"></span>No</label>
+        <label class="opt"><span class="dot"></span>No aplica / No tengo información aún</label>
+      </div>
+      <p class="err">Selecciona una opción.</p>
+    </div>
+
+    <div class="card" data-req="1">
+      <p class="q">4. ¿Tu vivienda o el lugar donde te encuentras presentó alguna afectación que comprometa tu seguridad?</p>
+      <div class="opts" data-name="vivienda">
+        <label class="opt"><span class="dot"></span>No</label>
+        <label class="opt"><span class="dot"></span>Sí, pero estamos en un lugar seguro</label>
+        <label class="opt"><span class="dot"></span>Sí, y necesitamos apoyo/orientación</label>
+      </div>
+      <p class="err">Selecciona una opción.</p>
+    </div>
+
+    <div class="card" data-req="1">
+      <p class="q">5. ¿Necesitas algún tipo de apoyo por parte de la empresa en este momento?</p>
+      <div class="opts" data-name="apoyo">
+        <label class="opt"><span class="dot"></span>No</label>
+        <label class="opt"><span class="dot"></span>Sí</label>
+      </div>
+      <p class="err">Selecciona una opción.</p>
+    </div>
+
+    <div class="card">
+      <p class="q">6. Si respondiste que sí o hay alguna situación que debamos conocer, cuéntanos brevemente cuál <span class="opt-tag">(opcional)</span></p>
+      <textarea name="detalle" placeholder="Cuéntanos brevemente…"></textarea>
+    </div>
+
+    <div class="card">
+      <p class="q">7. ¿Tienes algún número al que te podamos contactar además de este? <span class="opt-tag">(opcional)</span></p>
+      <input type="tel" name="telefono" inputmode="tel" autocomplete="tel" placeholder="Ej: 300 123 4567">
+    </div>
+
+    <button type="submit" id="btn">Enviar reporte</button>
+  </form>
+
+  <div id="done" class="card">
+    <div class="check">✓</div>
+    <h2>¡Gracias!</h2>
+    <p class="sub">Tu reporte fue enviado. Cuídate mucho. 💙</p>
+  </div>
+
+  <footer>Tus respuestas son confidenciales y solo se usan para brindarte apoyo.</footer>
+</div>
+
+<script>
+// ==== CONFIG ====
+var SUPABASE_URL  = "__SUPABASE_URL__";
+var SUPABASE_ANON = "__SUPABASE_ANON__";
+// ================
+
+// radio-style option groups
+document.querySelectorAll('.opts').forEach(function(g){
+  g.querySelectorAll('.opt').forEach(function(o){
+    o.addEventListener('click', function(){
+      g.querySelectorAll('.opt').forEach(function(x){x.classList.remove('sel')});
+      o.classList.add('sel');
+      g.closest('.card').classList.remove('invalid');
+    });
+  });
+});
+document.querySelectorAll('input,textarea').forEach(function(i){
+  i.addEventListener('input', function(){ i.closest('.card').classList.remove('invalid'); });
+});
+
+function utmString(){
+  var p = new URLSearchParams(location.search), parts = [];
+  ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k){
+    if(p.get(k)) parts.push(k + '=' + p.get(k));
+  });
+  // any other non-utm params worth keeping (e.g. ?c=whatsapp)
+  p.forEach(function(v,k){ if(!/^utm_/.test(k)) parts.push(k + '=' + v); });
+  return parts.join('&') || '(sin utm)';
+}
+
+document.getElementById('f').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var data = {}, ok = true;
+
+  data.nombre   = document.querySelector('[name=nombre]').value.trim();
+  data.detalle  = document.querySelector('[name=detalle]').value.trim();
+  data.telefono = document.querySelector('[name=telefono]').value.trim();
+  ['salvo','familia','vivienda','apoyo'].forEach(function(n){
+    var sel = document.querySelector('[data-name='+n+'] .opt.sel');
+    data[n] = sel ? sel.textContent.trim() : '';
+  });
+
+  document.querySelectorAll('.card[data-req]').forEach(function(c){
+    var name = c.querySelector('[name]') ? c.querySelector('[name]').name : c.querySelector('.opts').dataset.name;
+    if(!data[name]){ c.classList.add('invalid'); ok = false; }
+  });
+  if(!ok){ document.querySelector('.card.invalid').scrollIntoView({behavior:'smooth', block:'center'}); return; }
+
+  data.utm = utmString();
+  data.user_agent = navigator.userAgent;
+
+  var btn = document.getElementById('btn');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+
+  fetch(SUPABASE_URL + '/rest/v1/safety_checkins', {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'apikey': SUPABASE_ANON,
+      'Authorization':'Bearer ' + SUPABASE_ANON,
+      'Prefer':'return=minimal'
+    },
+    body: JSON.stringify(data)
+  }).then(function(r){
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    document.getElementById('f').style.display = 'none';
+    document.getElementById('done').style.display = 'block';
+    window.scrollTo({top:0, behavior:'smooth'});
+  }).catch(function(e){
+    btn.disabled = false; btn.textContent = 'Reintentar envío';
+    alert('No se pudo enviar. Revisa tu conexión e inténtalo de nuevo.');
+  });
+});
+</script>
+</body>
+</html>
