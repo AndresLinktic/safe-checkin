@@ -20,7 +20,9 @@
     --step:14px;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
-  body{margin:0; background:linear-gradient(160deg,var(--bg1),var(--bg2) 60%,#00262e) fixed; color:var(--ink);
+  html{background:var(--bg1)}
+  body{margin:0; min-height:100vh; color:var(--ink);
+       background:linear-gradient(160deg,var(--bg1),var(--bg2) 55%,#00262e) no-repeat;
        font:16px/1.6 "Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
        padding:16px; padding-bottom:max(56px, env(safe-area-inset-bottom))}
   .wrap{max-width:520px; margin:0 auto}
@@ -31,7 +33,7 @@
        box-shadow:0 0 12px rgba(0,227,232,.55); transition:width .35s cubic-bezier(.2,.7,.3,1)}
 
   header{padding:20px 2px 2px}
-  .logo{height:64px; display:block; margin:0 0 22px}
+  .logo{height:88px; width:auto; display:block; margin:0 0 28px}
   h1{font-size:clamp(1.6rem, 6.5vw, 2.05rem); font-weight:600; letter-spacing:-.025em;
      line-height:1.2; margin:0 0 10px}
   .sub{color:var(--muted); font-size:.95rem; line-height:1.55; margin:0;
@@ -95,6 +97,7 @@
        border:1px solid rgba(242,61,76,.45); background:rgba(242,61,76,.1);
        color:#ffd7da; font-size:.9rem; line-height:1.5; text-align:center}
 
+  body.sent header h1, body.sent header .sub{display:none}
   #done{display:none; text-align:center; padding:44px 24px 40px}
   #done .check{width:76px; height:76px; border-radius:50%; margin:0 auto 22px;
        display:grid; place-items:center; background:rgba(0,227,232,.12);
@@ -115,7 +118,7 @@
     body{padding:24px}
     header{padding:28px 2px 2px}
     .card{padding:24px 22px}
-    .logo{height:72px; margin-bottom:30px}
+    .logo{height:104px; margin-bottom:34px}
     .opts{gap:11px}
   }
   @media (prefers-reduced-motion: reduce){
@@ -281,6 +284,7 @@ document.getElementById('f').addEventListener('submit', function(ev){
     if(!r.ok) throw new Error('HTTP ' + r.status);
     document.getElementById('f').style.display = 'none';
     document.getElementById('done').style.display = 'block';
+    document.body.classList.add('sent');
     document.getElementById('progbar').style.width = '100%';
     window.scrollTo({top:0, behavior:'smooth'});
   }).catch(function(e){
