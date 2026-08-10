@@ -4,6 +4,7 @@ export default async function handler(req, res) {
   const b = req.body || {};
   const row = {
     nombre: String(b.nombre || '').slice(0, 200),
+    ciudad: String(b.ciudad || '').slice(0, 120),
     salvo: String(b.salvo || '').slice(0, 100),
     familia: String(b.familia || '').slice(0, 100),
     vivienda: String(b.vivienda || '').slice(0, 100),
@@ -33,8 +34,8 @@ export default async function handler(req, res) {
             {
               type: 'execute',
               stmt: {
-                sql: 'INSERT INTO safety_checkins (nombre,salvo,familia,vivienda,apoyo,detalle,telefono,utm,empleado_id,user_agent) VALUES (?,?,?,?,?,?,?,?,?,?)',
-                args: [row.nombre, row.salvo, row.familia, row.vivienda, row.apoyo, row.detalle, row.telefono, row.utm, row.empleado_id, row.user_agent]
+                sql: 'INSERT INTO safety_checkins (nombre,ciudad,salvo,familia,vivienda,apoyo,detalle,telefono,utm,empleado_id,user_agent) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+                args: [row.nombre, row.ciudad, row.salvo, row.familia, row.vivienda, row.apoyo, row.detalle, row.telefono, row.utm, row.empleado_id, row.user_agent]
                   .map((v) => ({ type: 'text', value: v })),
               },
             },

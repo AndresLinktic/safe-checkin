@@ -134,18 +134,24 @@
   <header>
     <img class="logo" src="assets/logo.png" width="1100" height="515" alt="Linktic">
     <h1>¿Estás bien?</h1>
-    <p class="sub"><span class="pulse" aria-hidden="true"></span>Queremos saber cómo estás. Son 7 preguntas y toma menos de un minuto.</p>
+    <p class="sub"><span class="pulse" aria-hidden="true"></span>Queremos saber cómo estás. Son 8 preguntas y toma menos de un minuto.</p>
   </header>
 
   <form id="f" novalidate>
     <div class="card" data-req="1">
-      <p class="q"><span class="eyebrow">Pregunta 1 de 7</span>Nombre completo</p>
+      <p class="q"><span class="eyebrow">Pregunta 1 de 8</span>Nombre completo</p>
       <input type="text" name="nombre" autocomplete="name" placeholder="Tu nombre y apellido">
       <p class="err">Por favor escribe tu nombre.</p>
     </div>
 
     <div class="card" data-req="1">
-      <p class="q"><span class="eyebrow">Pregunta 2 de 7</span>¿Te encuentras a salvo en este momento?</p>
+      <p class="q"><span class="eyebrow">Pregunta 2 de 8</span>¿Desde qué ciudad o municipio reportas?</p>
+      <input type="text" name="ciudad" autocomplete="address-level2" placeholder="Ej: Bogotá, Medellín, Cali…">
+      <p class="err">Por favor escribe tu ciudad.</p>
+    </div>
+
+    <div class="card" data-req="1">
+      <p class="q"><span class="eyebrow">Pregunta 3 de 8</span>¿Te encuentras a salvo en este momento?</p>
       <div class="opts" data-name="salvo">
         <label class="opt"><span class="dot"></span>Sí</label>
         <label class="opt"><span class="dot"></span>No</label>
@@ -155,7 +161,7 @@
     </div>
 
     <div class="card" data-req="1">
-      <p class="q"><span class="eyebrow">Pregunta 3 de 7</span>¿Tu familia o las personas que se encuentran contigo están bien?</p>
+      <p class="q"><span class="eyebrow">Pregunta 4 de 8</span>¿Tu familia o las personas que se encuentran contigo están bien?</p>
       <div class="opts" data-name="familia">
         <label class="opt"><span class="dot"></span>Sí</label>
         <label class="opt"><span class="dot"></span>No</label>
@@ -165,7 +171,7 @@
     </div>
 
     <div class="card" data-req="1">
-      <p class="q"><span class="eyebrow">Pregunta 4 de 7</span>¿Tu vivienda o el lugar donde te encuentras presentó alguna afectación que comprometa tu seguridad?</p>
+      <p class="q"><span class="eyebrow">Pregunta 5 de 8</span>¿Tu vivienda o el lugar donde te encuentras presentó alguna afectación que comprometa tu seguridad?</p>
       <div class="opts" data-name="vivienda">
         <label class="opt"><span class="dot"></span>No</label>
         <label class="opt"><span class="dot"></span>Sí, pero estamos en un lugar seguro</label>
@@ -175,7 +181,7 @@
     </div>
 
     <div class="card" data-req="1">
-      <p class="q"><span class="eyebrow">Pregunta 5 de 7</span>¿Necesitas algún tipo de apoyo por parte de la empresa en este momento?</p>
+      <p class="q"><span class="eyebrow">Pregunta 6 de 8</span>¿Necesitas algún tipo de apoyo por parte de la empresa en este momento?</p>
       <div class="opts" data-name="apoyo">
         <label class="opt"><span class="dot"></span>No</label>
         <label class="opt"><span class="dot"></span>Sí</label>
@@ -184,12 +190,12 @@
     </div>
 
     <div class="card">
-      <p class="q"><span class="eyebrow">Pregunta 6 de 7</span>Si respondiste que sí o hay alguna situación que debamos conocer, cuéntanos brevemente cuál <span class="opt-tag">(opcional)</span></p>
+      <p class="q"><span class="eyebrow">Pregunta 7 de 8</span>Si respondiste que sí o hay alguna situación que debamos conocer, cuéntanos brevemente cuál <span class="opt-tag">(opcional)</span></p>
       <textarea name="detalle" placeholder="Cuéntanos brevemente…"></textarea>
     </div>
 
     <div class="card">
-      <p class="q"><span class="eyebrow">Pregunta 7 de 7</span>¿Tienes algún número al que te podamos contactar además de este? <span class="opt-tag">(opcional)</span></p>
+      <p class="q"><span class="eyebrow">Pregunta 8 de 8</span>¿Tienes algún número al que te podamos contactar además de este? <span class="opt-tag">(opcional)</span></p>
       <input type="tel" name="telefono" inputmode="tel" autocomplete="tel" placeholder="Ej: 300 123 4567">
     </div>
 
@@ -254,6 +260,7 @@ document.getElementById('f').addEventListener('submit', function(ev){
   var data = {}, ok = true;
 
   data.nombre   = document.querySelector('[name=nombre]').value.trim();
+  data.ciudad   = document.querySelector('[name=ciudad]').value.trim();
   data.detalle  = document.querySelector('[name=detalle]').value.trim();
   data.telefono = document.querySelector('[name=telefono]').value.trim();
   ['salvo','familia','vivienda','apoyo'].forEach(function(n){
